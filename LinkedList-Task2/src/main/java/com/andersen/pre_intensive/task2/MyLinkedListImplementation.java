@@ -35,7 +35,7 @@ public class MyLinkedListImplementation<T> implements MyLinkedList<T> {
 
 	@Override
 	public boolean delete(int index) {
-		if (index < 0 && index >= size) {
+		if (index < 0 || index >= size) {
 			throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
 		}
 
@@ -64,7 +64,7 @@ public class MyLinkedListImplementation<T> implements MyLinkedList<T> {
 
 	@Override
 	public T get(int index) {
-		if (index < 0 && index >= size) {
+		if (index < 0 || index >= size) {
 			throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
 		}
 
