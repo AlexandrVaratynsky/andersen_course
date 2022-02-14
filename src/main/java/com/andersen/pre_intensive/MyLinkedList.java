@@ -1,4 +1,4 @@
-package com.andersen.pre_intensive.task2;
+package com.andersen.pre_intensive;
 
 public interface MyLinkedList<T> {
 	
