@@ -3,11 +3,12 @@ package com.andersen.pre_intensive;
 import org.junit.Before;
 import org.junit.Test;
 
-
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 import java.util.LinkedList;
 
@@ -21,6 +22,7 @@ public class LinkedListImplementationTest {
 
 
     private final String[] headAr = {"Hello", "World", "Test"};
+    private final String[] sortedHeadList = (String[]) Arrays.stream(headAr).sorted().toArray();
     private final String[] tailAr = {"Hello111", "World111", "Test111"};
 
     LinkedListImplementation<String> list = new LinkedListImplementation<>();
@@ -76,6 +78,12 @@ public class LinkedListImplementationTest {
 
     @Test
     public void sort() {
+        headList = new LinkedListImplementation<>(headAr);
+        headList.sort();
+        List<String> actual = Arrays.asList((String[]) headList.getArrayOfValues());
+        assertThat(actual)
+                .containsExactlyInAnyOrder(sortedHeadList);
+
     }
 
     @Test
