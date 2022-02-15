@@ -1,12 +1,12 @@
 package com.andersen.pre_intensive;
 
 
-public class LinkedListImplementation<T> implements MyLinkedList<Object> {
+public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
-    private Node<T> firstNode;
-    private Node<T> lastNode;
-    private int size = 0;
-
+	private Node<T> firstNode;
+	private Node<T> lastNode;
+	private int size = 0;
+  
     public LinkedListImplementation() {
     }
 
@@ -15,22 +15,94 @@ public class LinkedListImplementation<T> implements MyLinkedList<Object> {
         addAll(arrray);
     }
 
+	@Override
+	public void add(Object o) {
+
+		Node<T> nod;
+		if (size == 0) {
+			nod = new Node((T) o, null, null);
+			firstNode = nod;
+			lastNode = nod;
+			System.out.println(firstNode + " " + lastNode);
+			size ++;
+		}
+		else {
+			nod = new Node((T) o, null, lastNode);
+			lastNode.next = nod;
+			lastNode = nod;
+			size ++;
+		}
+
+	}
+
+	@Override
+	public void add(Object o, int index) {
+
+	}
+
+	@Override
+	public void sort() {
+
+	}
+
+	Node<T> findListElementByIndex(int index) {
+
+		if (index < (size / 2)) {
+			Node<T> node = firstNode;
+			for (int i = 0; i < index; i++)
+				node = node.next;
+			return node;
+		} else {
+			Node<T> node = lastNode;
+            for (int i = size - 1; i > index; i--)
+				node = node.prev;
+			return node;
+		}
+	}
+
+	@Override
+	public boolean delete(int index) {
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
+		}
+
+		Node<T> foundListElement = findListElementByIndex(index);
+		final Node<T> next = foundListElement.next;
+		final Node<T> prev = foundListElement.prev;
+
+		if (prev == null) {
+			firstNode = next;
+		} else {
+			prev.next = next;
+			foundListElement.prev = null;
+		}
+
+		if (next == null) {
+			lastNode = prev;
+		} else {
+			next.prev = prev;
+			foundListElement.next = null;
+		}
+
+		foundListElement.value = null;
+		size--;
+		return true;
+	}
+
+	@Override
+	public T get(int index) {
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+		}
+		return findListElementByIndex(index).value;
+	}
+
+	@Override
+	public int size() {
+		return size;
+	}
+
     @Override
-    public void add(Object o) {
-
-    }
-
-    @Override
-    public void add(Object o, int index) {
-
-    }
-
-    @Override
-    public void sort() {
-
-
-    }
-
     public Object[] getArrayOfValues() {
         Object[] ar = new Object[size];
 
@@ -69,20 +141,6 @@ public class LinkedListImplementation<T> implements MyLinkedList<Object> {
         size++;
     }
 
-    @Override
-    public boolean delete(int index) {
-        return false;
-    }
-
-    @Override
-    public Object get(int index) {
-        return null;
-    }
-
-    @Override
-    public int size() {
-        return 0;
-    }
 
     private static class Node<T> {
         T value;
