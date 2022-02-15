@@ -19,7 +19,7 @@ public class LinkedListImplementationTest {
     private final String[] headAr = {"Hello", "World", "Test"};
     private final String[] tailAr = {"Hello111", "World111", "Test111"};
 
-    LinkedListImplementation<String> list=new LinkedListImplementation<>();
+    LinkedListImplementation<String> list = new LinkedListImplementation<>();
 
     @Before
     public void createTestList() {
@@ -98,13 +98,13 @@ public class LinkedListImplementationTest {
 
     @Test
     public void deleteElementByIndexLast() {
-        list.delete(list.size()-1);
+        list.delete(list.size() - 1);
         assertEquals(3, list.size());
     }
 
     @Test
     public void deleteElementByIndexLast2() {
-        list.delete(list.size()-1);
+        list.delete(list.size() - 1);
         String[] expectedArray = {"1", "2", "3"};
         assertArrayEquals(expectedArray, list.getArrayOfValues());
     }
@@ -121,7 +121,7 @@ public class LinkedListImplementationTest {
 
     @Test
     public void getElementByIndex() {
-        assertEquals("1",list.get(0));
+        assertEquals("1", list.get(0));
     }
 
     @Test
