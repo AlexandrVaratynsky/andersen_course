@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Array;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -20,19 +21,40 @@ public class LinkedListImplementationTest {
         list.add("4");
     }
     @Test
-    public void add() {
+    public void addToList() {
+        LinkedListImplementation<String> addList=new LinkedListImplementation<>();
+        addList.add("1");
+        addList.add("2");
+        String[] expectedArray = {"1", "2"};
+        assertArrayEquals(expectedArray, addList.getArrayOfValues());
     }
 
     @Test
-    public void testAdd() {
+    public void addToListByIndex() {
+        LinkedListImplementation<String> addList=new LinkedListImplementation<>();
+        addList.add("1");
+        addList.add("2");
+        addList.add("3", 1);
+        String[] expectedArray = {"1", "3", "2"};
+        System.out.println(Arrays.toString(addList.getArrayOfValues()));
+        assertArrayEquals(expectedArray, addList.getArrayOfValues());
     }
 
     @Test
     public void sort() {
+
     }
 
     @Test
     public void concat() {
+        LinkedListImplementation<String> addList=new LinkedListImplementation<>();
+        addList.add("11");
+        addList.add("22");
+        list.concat(addList);
+        String[] expectedArray = {"1", "2", "3", "4", "11", "22"};
+        System.out.println(Arrays.toString(list.getArrayOfValues()));
+        System.out.println(Arrays.toString(addList.getArrayOfValues()));
+        assertArrayEquals(expectedArray, list.getArrayOfValues());
     }
 
     @Test
