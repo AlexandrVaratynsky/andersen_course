@@ -1,14 +1,19 @@
 package com.andersen.pre_intensive;
 
 
-import java.util.LinkedList;
-import java.util.List;
-
-public class LinkedListImplementation<T> implements MyLinkedList<T> {
+public class LinkedListImplementation<T> implements MyLinkedList<Object> {
 
     private Node<T> firstNode;
     private Node<T> lastNode;
     private int size = 0;
+
+    public LinkedListImplementation() {
+    }
+
+    public LinkedListImplementation(T[] arrray) {
+        this();
+        addAll(arrray);
+    }
 
     @Override
     public void add(Object o) {
@@ -26,30 +31,43 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
     }
 
-    public T[] getArrayOfValues() {
+    public Object[] getArrayOfValues() {
         Object[] ar = new Object[size];
 
         Node<T> current = firstNode;
         int i = 0;
         while (current != null) {
-            ar[i] = current;
+            ar[i] = current.value;
             current = current.next;
             i++;
         }
-        return (T[]) ar;
+
+        return ar;
     }
 
     @Override
-    public void concat(MyLinkedList<T> newList) {
+    public void concat(MyLinkedList<Object> newList) {
+        addAll((T[]) newList.getArrayOfValues());
+    }
 
-        Object[] ar = newList.getArrayOfValues();
+    public void addAll(T[] arrray) {
+        int sizeBeforeAdding = size;
+        int i = size;
+        while (i < sizeBeforeAdding + arrray.length) {
+            addItemToTail(arrray[i]);
+            i++;
+        }
+    }
 
-        for (Object o : ar) {
-            T el = (T) o;
-            Node<T> node = new Node<>(el, null, lastNode);
-            lastNode.next = node;
+    public void addItemToTail(T item) {
+        Node<T> node = new Node<>(item, null, lastNode);
+        if (firstNode == null) {
+            firstNode = node;
             lastNode = node;
         }
+        lastNode.next = node;
+        lastNode = node;
+        size++;
     }
 
     @Override
@@ -58,7 +76,7 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
     }
 
     @Override
-    public T get(int index) {
+    public Object get(int index) {
         return null;
     }
 

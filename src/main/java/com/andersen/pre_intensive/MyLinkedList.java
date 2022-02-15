@@ -16,5 +16,5 @@ public interface MyLinkedList<T> {
 
 	int size();
 
-	public T[] getArrayOfValues();
+	public Object[] getArrayOfValues();
 }
