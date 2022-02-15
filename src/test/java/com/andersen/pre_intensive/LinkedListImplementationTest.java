@@ -91,4 +91,19 @@ public class LinkedListImplementationTest {
                 .doesNotContain("ERROR")
                 .doesNotContain(666);
     }
+
+    @Test
+    public void getArrayOfValues() {
+        assertThat(emptyList.getArrayOfValues())
+                .hasSize(0)
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
+
+        headList = new LinkedListImplementation<>(headAr);
+        assertThat(headList.getArrayOfValues())
+                .hasSize(headAr.length)
+                .containsAll(Arrays.asList(headAr))
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
+    }
 }
