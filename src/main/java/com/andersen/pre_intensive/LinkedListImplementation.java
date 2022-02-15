@@ -1,6 +1,8 @@
 package com.andersen.pre_intensive;
 
 
+import java.util.Arrays;
+
 public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
     private Node<T> firstNode;
@@ -41,7 +43,15 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
     @Override
     public void sort() {
-
+        T[] tempAr = (T[]) this.getArrayOfValues();
+        Arrays.sort(tempAr);
+        Node<T> node = firstNode;
+        int i = 0;
+        while (node != null) {
+            node.value = tempAr[i];
+            node = node.next;
+            i++;
+        }
     }
 
     Node<T> findListElementByIndex(int index) {
