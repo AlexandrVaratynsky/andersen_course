@@ -11,6 +11,21 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 	@Override
 	public void add(Object o) {
 
+		Node<T> nod;
+		if (size == 0) {
+			nod = new Node((T) o, null, null);
+			firstNode = nod;
+			lastNode = nod;
+			System.out.println(firstNode + " " + lastNode);
+			size ++;
+		}
+		else {
+			nod = new Node((T) o, null, lastNode);
+			lastNode.next = nod;
+			lastNode = nod;
+			size ++;
+		}
+
 	}
 
 	@Override
@@ -49,25 +64,25 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 			throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
 		}
 
-		Node<T> findedListElement = findListElementByIndex(index);
-		final Node<T> next = findedListElement.next;
-		final Node<T> prev = findedListElement.prev;
+		Node<T> foundListElement = findListElementByIndex(index);
+		final Node<T> next = foundListElement.next;
+		final Node<T> prev = foundListElement.prev;
 
 		if (prev == null) {
 			firstNode = next;
 		} else {
 			prev.next = next;
-			findedListElement.prev = null;
+			foundListElement.prev = null;
 		}
 
 		if (next == null) {
 			lastNode = prev;
 		} else {
 			next.prev = prev;
-			findedListElement.next = null;
+			foundListElement.next = null;
 		}
 
-		findedListElement.value = null;
+		foundListElement.value = null;
 		size--;
 		return true;
 	}
