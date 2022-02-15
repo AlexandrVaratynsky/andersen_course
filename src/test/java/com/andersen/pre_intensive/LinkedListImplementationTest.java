@@ -23,17 +23,33 @@ public class LinkedListImplementationTest {
 
     @Test
     public void concat() {
-        String[] array = {"Hello", "World", "Test"};
-        LinkedListImplementation<String> list = new LinkedListImplementation<>(array);
 
-        String[] addingAr = {"Hello11", "World11"};
-        LinkedListImplementation<String> addingList = new LinkedListImplementation<>(addingAr);
+        LinkedListImplementation<String> emptyList = new LinkedListImplementation<>();
 
-        list.concat(addingList);
-        assertThat(list.getArrayOfValues())
-                .hasSize(array.length + addingAr.length)
-                .containsAll(Arrays.asList(array))
-                .containsAll(Arrays.asList(addingAr))
+        String[] headAr = {"Hello", "World", "Test"};
+        LinkedListImplementation<String> headList = new LinkedListImplementation<>(headAr);
+
+        headList.concat(emptyList);
+        assertThat(headList.getArrayOfValues())
+                .hasSize(headAr.length)
+                .containsAll(Arrays.asList(headAr))
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
+
+
+        String[] tailAr = {"Hello11", "World11"};
+        LinkedListImplementation<String> tailList = new LinkedListImplementation<>(tailAr);
+
+        emptyList.concat(tailList);
+        assertThat(emptyList.getArrayOfValues())
+                .hasSize(tailAr.length);
+
+
+        headList.concat(tailList);
+        assertThat(headList.getArrayOfValues())
+                .hasSize(headAr.length + tailAr.length)
+                .containsAll(Arrays.asList(headAr))
+                .containsAll(Arrays.asList(tailAr))
                 .doesNotContain("ERROR")
                 .doesNotContain(666);
     }
