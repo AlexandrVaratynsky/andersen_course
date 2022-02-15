@@ -37,7 +37,7 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 			return node;
 		} else {
 			Node<T> node = lastNode;
-			for (int i = size - 1; i > index; i--)
+            for (int i = size - 1; i > index; i--)
 				node = node.prev;
 			return node;
 		}
@@ -85,7 +85,22 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 		return size;
 	}
 
-	private static class Node<T> {
+    @Override
+    public Object[] getArrayOfValues() {
+        Object[] ar = new Object[size];
+
+        Node<T> current = firstNode;
+        int i = 0;
+        while (current != null) {
+            ar[i] = current.value;
+            current = current.next;
+            i++;
+        }
+
+        return ar;
+    }
+
+    private static class Node<T> {
 		T value;
 		Node<T> next;
 		Node<T> prev;
