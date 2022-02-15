@@ -9,6 +9,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LinkedListImplementationTest {
 
+    private final LinkedListImplementation<String> emptyList = new LinkedListImplementation<>();
+    private LinkedListImplementation<String> headList;
+    private LinkedListImplementation<String> tailList;
+
+
+    private final String[] headAr = {"Hello", "World", "Test"};
+    private final String[] tailAr = {"Hello111", "World111", "Test111"};
+
+
+
     @Test
     public void add() {
     }
@@ -24,11 +34,7 @@ public class LinkedListImplementationTest {
     @Test
     public void concat() {
 
-        LinkedListImplementation<String> emptyList = new LinkedListImplementation<>();
-
-        String[] headAr = {"Hello", "World", "Test"};
-        LinkedListImplementation<String> headList = new LinkedListImplementation<>(headAr);
-
+        headList = new LinkedListImplementation<>(headAr);
         headList.concat(emptyList);
         assertThat(headList.getArrayOfValues())
                 .hasSize(headAr.length)
@@ -36,14 +42,13 @@ public class LinkedListImplementationTest {
                 .doesNotContain("ERROR")
                 .doesNotContain(666);
 
-
-        String[] tailAr = {"Hello11", "World11"};
-        LinkedListImplementation<String> tailList = new LinkedListImplementation<>(tailAr);
-
+        tailList = new LinkedListImplementation<>(tailAr);
         emptyList.concat(tailList);
         assertThat(emptyList.getArrayOfValues())
-                .hasSize(tailAr.length);
-
+                .hasSize(tailAr.length)
+                .containsAll(Arrays.asList(tailAr))
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
 
         headList.concat(tailList);
         assertThat(headList.getArrayOfValues())
@@ -69,18 +74,14 @@ public class LinkedListImplementationTest {
     @Test
     public void addAll() {
 
-        LinkedListImplementation<String> emptyList = new LinkedListImplementation<>();
-        String[] tailAr = {"Hello111", "World111", "Test111"};
         emptyList.addAll(tailAr);
-
         assertThat(emptyList.getArrayOfValues())
                 .hasSize(tailAr.length)
                 .containsAll(Arrays.asList(tailAr))
                 .doesNotContain("ERROR")
                 .doesNotContain(666);
 
-        String[] headAr = {"Hello", "World", "Test"};
-        LinkedListImplementation<String> headList = new LinkedListImplementation<>(headAr);
+        headList = new LinkedListImplementation<>(headAr);
         headList.addAll(tailAr);
 
         assertThat(headList.getArrayOfValues())
