@@ -51,7 +51,6 @@ public class LinkedListImplementation<T> implements MyLinkedList<Object> {
     }
 
     public void addAll(T[] arrray) {
-        int sizeBeforeAdding = size;
         int i = 0;
         while (i < arrray.length) {
             addItemToTail(arrray[i]);
@@ -59,7 +58,7 @@ public class LinkedListImplementation<T> implements MyLinkedList<Object> {
         }
     }
 
-    public void addItemToTail(T item) {
+    private void addItemToTail(T item) {
         Node<T> node = new Node<>(item, null, lastNode);
         if (firstNode == null) {
             firstNode = node;
