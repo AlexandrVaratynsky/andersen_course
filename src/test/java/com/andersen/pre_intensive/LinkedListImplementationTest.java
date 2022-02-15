@@ -68,12 +68,25 @@ public class LinkedListImplementationTest {
 
     @Test
     public void addAll() {
-        String[] array = {"Hello", "World", "Test"};
-        LinkedListImplementation<String> list = new LinkedListImplementation<>(array);
 
-        assertThat(list.getArrayOfValues())
-                .hasSize(array.length)
-                .containsAll(Arrays.asList(array))
+        LinkedListImplementation<String> emptyList = new LinkedListImplementation<>();
+        String[] tailAr = {"Hello111", "World111", "Test111"};
+        emptyList.addAll(tailAr);
+
+        assertThat(emptyList.getArrayOfValues())
+                .hasSize(tailAr.length)
+                .containsAll(Arrays.asList(tailAr))
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
+
+        String[] headAr = {"Hello", "World", "Test"};
+        LinkedListImplementation<String> headList = new LinkedListImplementation<>(headAr);
+        headList.addAll(tailAr);
+
+        assertThat(headList.getArrayOfValues())
+                .hasSize(headAr.length + tailAr.length)
+                .containsAll(Arrays.asList(headAr))
+                .containsAll(Arrays.asList(tailAr))
                 .doesNotContain("ERROR")
                 .doesNotContain(666);
     }
