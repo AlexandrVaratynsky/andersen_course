@@ -3,11 +3,21 @@ package com.andersen.pre_intensive;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Array;
 
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 public class LinkedListImplementationTest {
+
+    private final LinkedListImplementation<String> emptyList = new LinkedListImplementation<>();
+    private LinkedListImplementation<String> headList;
+    private LinkedListImplementation<String> tailList;
+
+
+    private final String[] headAr = {"Hello", "World", "Test"};
+    private final String[] tailAr = {"Hello111", "World111", "Test111"};
 
     LinkedListImplementation<String> list=new LinkedListImplementation<>();
 
@@ -19,6 +29,7 @@ public class LinkedListImplementationTest {
         list.add("3");
         list.add("4");
     }
+
     @Test
     public void add() {
     }
@@ -33,6 +44,30 @@ public class LinkedListImplementationTest {
 
     @Test
     public void concat() {
+
+        headList = new LinkedListImplementation<>(headAr);
+        headList.concat(emptyList);
+        assertThat(headList.getArrayOfValues())
+                .hasSize(headAr.length)
+                .containsAll(Arrays.asList(headAr))
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
+
+        tailList = new LinkedListImplementation<>(tailAr);
+        emptyList.concat(tailList);
+        assertThat(emptyList.getArrayOfValues())
+                .hasSize(tailAr.length)
+                .containsAll(Arrays.asList(tailAr))
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
+
+        headList.concat(tailList);
+        assertThat(headList.getArrayOfValues())
+                .hasSize(headAr.length + tailAr.length)
+                .containsAll(Arrays.asList(headAr))
+                .containsAll(Arrays.asList(tailAr))
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
     }
 
     @Test
@@ -91,5 +126,41 @@ public class LinkedListImplementationTest {
 
     @Test
     public void size() {
+    }
+
+    @Test
+    public void addAll() {
+
+        emptyList.addAll(tailAr);
+        assertThat(emptyList.getArrayOfValues())
+                .hasSize(tailAr.length)
+                .containsAll(Arrays.asList(tailAr))
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
+
+        headList = new LinkedListImplementation<>(headAr);
+        headList.addAll(tailAr);
+
+        assertThat(headList.getArrayOfValues())
+                .hasSize(headAr.length + tailAr.length)
+                .containsAll(Arrays.asList(headAr))
+                .containsAll(Arrays.asList(tailAr))
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
+    }
+
+    @Test
+    public void getArrayOfValues() {
+        assertThat(emptyList.getArrayOfValues())
+                .hasSize(0)
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
+
+        headList = new LinkedListImplementation<>(headAr);
+        assertThat(headList.getArrayOfValues())
+                .hasSize(headAr.length)
+                .containsAll(Arrays.asList(headAr))
+                .doesNotContain("ERROR")
+                .doesNotContain(666);
     }
 }

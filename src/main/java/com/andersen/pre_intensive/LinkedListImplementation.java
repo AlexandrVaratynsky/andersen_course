@@ -1,12 +1,19 @@
 package com.andersen.pre_intensive;
 
 
-
 public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
 	private Node<T> firstNode;
 	private Node<T> lastNode;
 	private int size = 0;
+  
+    public LinkedListImplementation() {
+    }
+
+    public LinkedListImplementation(T[] arrray) {
+        this();
+        addAll(arrray);
+    }
 
 	@Override
 	public void add(Object o) {
@@ -35,11 +42,6 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
 	@Override
 	public void sort() {
-
-	}
-
-	@Override
-	public void concat(MyLinkedList<T> newList) {
 
 	}
 
@@ -115,15 +117,40 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
         return ar;
     }
 
-    private static class Node<T> {
-		T value;
-		Node<T> next;
-		Node<T> prev;
+    @Override
+    public void concat(MyLinkedList<Object> newList) {
+        addAll((T[]) newList.getArrayOfValues());
+    }
 
-		public Node(T value, Node<T> next, Node<T> prev) {
-			this.value = value;
-			this.next = next;
-			this.prev = prev;
-		}
-	}
+    public void addAll(T[] arrray) {
+        int i = 0;
+        while (i < arrray.length) {
+            addItemToTail(arrray[i]);
+            i++;
+        }
+    }
+
+    private void addItemToTail(T item) {
+        Node<T> node = new Node<>(item, null, lastNode);
+        if (firstNode == null) {
+            firstNode = node;
+            lastNode = node;
+        }
+        lastNode.next = node;
+        lastNode = node;
+        size++;
+    }
+
+
+    private static class Node<T> {
+        T value;
+        Node<T> next;
+        Node<T> prev;
+
+        public Node(T value, Node<T> next, Node<T> prev) {
+            this.value = value;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
 }
