@@ -126,6 +126,12 @@ public class LinkedListImplementationTest {
 
     @Test
     public void size() {
+        assertThat(emptyList.size())
+                .isEqualTo(0);
+
+        headList = new LinkedListImplementation<>(headAr);
+        assertThat(headList.size())
+                .isEqualTo(headAr.length);
     }
 
     @Test
