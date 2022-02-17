@@ -39,15 +39,35 @@ public class LinkedListImplementationTest {
     	
     	LinkedListImplementation<Integer> linkList = new LinkedListImplementation<Integer>();
 		
-		linkList.add(0);
-		linkList.add(1);
-		linkList.add(2);
+		Integer [] inArray = {0, 1, 2, 3};
+		for (Integer i : inArray) {
+			linkList.add(i);
+		}
 		
+		Integer [] arrayFromList = new Integer [inArray.length]; 
+		for (int i = 0; i < inArray.length; i++) {
+			arrayFromList [i] = linkList.get(i);
+		}
 		
+		for (int i = 0; i < inArray.length; i++) {
+			Assert.assertEquals(inArray[i], arrayFromList[i]);
+		}
 		
+    }
+    
+    @Test
+    public void addWithIndex () {
+    	
+    	LinkedListImplementation<Integer> linkList = new LinkedListImplementation<Integer>();
+    	Integer [] inArray = {0, 1, 2, 3};
+		for (Integer i : inArray) {
+			linkList.add(i);
+		}
 		
+		Integer ins = 5;
+		linkList.add(ins, 1);
+		Assert.assertEquals(ins, linkList.get(1));
 		
-    	Assert.assertEquals(linkList, linkList);
     }
 
     @Test
