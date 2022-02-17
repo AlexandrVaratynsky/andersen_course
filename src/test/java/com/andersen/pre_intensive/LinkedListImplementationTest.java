@@ -142,7 +142,6 @@ public class LinkedListImplementationTest {
 
     @Test
     public void size() {
-<<<<<<< HEAD
     	
     	LinkedListImplementation<Integer> linkList = new LinkedListImplementation<Integer>();
 		
@@ -152,14 +151,6 @@ public class LinkedListImplementationTest {
 		
 		int size = linkList.size();
 		Assert.assertEquals(3, size);
-    	
-=======
-        assertThat(emptyList.size())
-                .isEqualTo(0);
-
-        headList = new LinkedListImplementation<>(headAr);
-        assertThat(headList.size())
-                .isEqualTo(headAr.length);
     }
 
     @Test
@@ -196,6 +187,5 @@ public class LinkedListImplementationTest {
                 .containsAll(Arrays.asList(headAr))
                 .doesNotContain("ERROR")
                 .doesNotContain(666);
->>>>>>> refs/heads/main
     }
 }
