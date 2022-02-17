@@ -1,18 +1,20 @@
 package com.andersen.pre_intensive;
 
 public interface MyLinkedList<T> {
-	
-	void add(Object o);
 
-	void add(Object o, int index);
+    void add(Object o);
 
-	void sort();
+    void add(Object o, int index);
 
-	void concat(MyLinkedList<T> newList);
+    void sort();
 
-	boolean delete(int index);
+    void concat(MyLinkedList<T> newList);
 
-	T get(int index);
+    boolean delete(int index);
 
-	int size();
+    T get(int index);
+
+    int size();
+
+    Object[] getArrayOfValues();
 }
