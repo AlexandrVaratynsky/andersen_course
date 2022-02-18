@@ -45,7 +45,7 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
     	
     	if (index < size-1) {
     		
-    		System.out.println("вставляем перед " + index);
+    		
     		Node<T> replaceElement = firstNode;
     		for (int i = 0; i < index; i++) {
     			replaceElement = replaceElement.next;
