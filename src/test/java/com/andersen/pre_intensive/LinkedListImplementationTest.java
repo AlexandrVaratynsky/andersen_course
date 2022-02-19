@@ -9,6 +9,10 @@ import java.util.Arrays;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
+import java.util.LinkedList;
+
+import org.junit.Assert;
+
 public class LinkedListImplementationTest {
 
     private final LinkedListImplementation<String> emptyList = new LinkedListImplementation<>();
@@ -32,6 +36,38 @@ public class LinkedListImplementationTest {
 
     @Test
     public void add() {
+    	
+    	LinkedListImplementation<Integer> linkList = new LinkedListImplementation<Integer>();
+		
+		Integer [] inArray = {0, 1, 2, 3};
+		for (Integer i : inArray) {
+			linkList.add(i);
+		}
+		
+		Integer [] arrayFromList = new Integer [inArray.length]; 
+		for (int i = 0; i < inArray.length; i++) {
+			arrayFromList [i] = linkList.get(i);
+		}
+		
+		for (int i = 0; i < inArray.length; i++) {
+			Assert.assertEquals(inArray[i], arrayFromList[i]);
+		}
+		
+    }
+    
+    @Test
+    public void addWithIndex () {
+    	
+    	LinkedListImplementation<Integer> linkList = new LinkedListImplementation<Integer>();
+    	Integer [] inArray = {0, 1, 2, 3};
+		for (Integer i : inArray) {
+			linkList.add(i);
+		}
+		
+		Integer ins = 5;
+		linkList.add(ins, 1);
+		Assert.assertEquals(ins, linkList.get(1));
+		
     }
 
     @Test
@@ -126,12 +162,15 @@ public class LinkedListImplementationTest {
 
     @Test
     public void size() {
-        assertThat(emptyList.size())
-                .isEqualTo(0);
-
-        headList = new LinkedListImplementation<>(headAr);
-        assertThat(headList.size())
-                .isEqualTo(headAr.length);
+    	
+    	LinkedListImplementation<Integer> linkList = new LinkedListImplementation<Integer>();
+		
+		linkList.add(0);
+		linkList.add(1);
+		linkList.add(2);
+		
+		int size = linkList.size();
+		Assert.assertEquals(3, size);
     }
 
     @Test

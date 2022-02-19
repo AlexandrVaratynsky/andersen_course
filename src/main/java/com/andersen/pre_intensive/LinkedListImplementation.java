@@ -1,43 +1,63 @@
 package com.andersen.pre_intensive;
 
-
 public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
     private Node<T> firstNode;
     private Node<T> lastNode;
     private int size = 0;
-
+    
     public LinkedListImplementation() {
     }
-
+    
     public LinkedListImplementation(T[] arrray) {
         this();
         addAll(arrray);
     }
 
-    @Override
-    public void add(Object o) {
+	@Override
+	public void add(Object o) {
 
-        Node<T> nod;
-        if (size == 0) {
-            nod = new Node((T) o, null, null);
-            firstNode = nod;
-            lastNode = nod;
-            System.out.println(firstNode + " " + lastNode);
-            size++;
-        } else {
-            nod = new Node((T) o, null, lastNode);
-            lastNode.next = nod;
-            lastNode = nod;
-            size++;
-        }
+		Node<T> nod;
+		if (size == 0) {
+			nod = new Node((T) o, null, null);
+			firstNode = nod;
+			lastNode = nod;
+			size++;
+		} else {
+			nod = new Node((T) o, null, lastNode);
+			lastNode.next = nod;
+			lastNode = nod;
+			size++;
+		}
 
-    }
+	}
 
-    @Override
-    public void add(Object o, int index) {
-
-    }
+	@Override
+	public void add(Object o, int index) {
+		
+		if (index > size-1) {
+    		throw new IndexOutOfBoundsException();
+    	}
+    	
+    	if (index == size-1) {
+    		this.add(o);
+    	}
+    	
+    	if (index < size-1) {
+    		
+    		
+    		Node<T> replaceElement = firstNode;
+    		for (int i = 0; i < index; i++) {
+    			replaceElement = replaceElement.next;
+    		}
+    		
+    		Node<T> newElement = new Node<> ((T) o, replaceElement, replaceElement.prev);
+    		replaceElement.prev.next = newElement;
+    		replaceElement.prev = newElement;
+    		size ++;
+    	
+    	}
+	}	
 
     @Override
     public void sort() {
@@ -45,7 +65,6 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
     }
 
     Node<T> findListElementByIndex(int index) {
-
         if (index < (size / 2)) {
             Node<T> node = firstNode;
             for (int i = 0; i < index; i++)
@@ -64,7 +83,7 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
         }
-
+        
         Node<T> foundListElement = findListElementByIndex(index);
         final Node<T> next = foundListElement.next;
         final Node<T> prev = foundListElement.prev;
