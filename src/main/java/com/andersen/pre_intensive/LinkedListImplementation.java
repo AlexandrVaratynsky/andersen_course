@@ -1,31 +1,70 @@
 package com.andersen.pre_intensive;
 
-
-
 public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
-	private Node<T> firstNode;
-	private Node<T> lastNode;
-	private int size = 0;
+    private Node<T> firstNode;
+    private Node<T> lastNode;
+    private int size = 0;
+
+    public LinkedListImplementation() {
+    }
+
+    public LinkedListImplementation(T[] arrray) {
+        this();
+        addAll(arrray);
+    }
 
 	@Override
 	public void add(Object o) {
+
+		Node<T> nod;
+		if (size == 0) {
+			nod = new Node((T) o, null, null);
+			firstNode = nod;
+			lastNode = nod;
+			size++;
+		} else {
+			nod = new Node((T) o, null, lastNode);
+			lastNode.next = nod;
+			lastNode = nod;
+			size++;
+		}
+
 	}
 
 	@Override
 	public void add(Object o, int index) {
+
+		if (index > size-1) {
+    		throw new IndexOutOfBoundsException();
+    	}
+
+    	if (index == size-1) {
+    		this.add(o);
+    	}
+
+    	if (index < size-1) {
+
+
+    		Node<T> replaceElement = firstNode;
+    		for (int i = 0; i < index; i++) {
+    			replaceElement = replaceElement.next;
+    		}
+
+    		Node<T> newElement = new Node<> ((T) o, replaceElement, replaceElement.prev);
+    		replaceElement.prev.next = newElement;
+    		replaceElement.prev = newElement;
+    		size ++;
+
+    	}
 	}
 
-	@Override
-	public void sort() {
-	}
+    @Override
+    public void sort() {
 
-	@Override
-	public void concat(MyLinkedList<T> newList) {
-	}
+    }
 
 	Node<T> findListElementByIndex(int index) {
-
 		if (index < (size / 2)) {
 			Node<T> node = firstNode;
 			for (int i = 0; i < index; i++)
@@ -39,47 +78,47 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 		}
 	}
 
-	@Override
-	public boolean delete(int index) {
-		if (index < 0 || index >= size) {
-			throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
-		}
+    @Override
+    public boolean delete(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
+        }
 
-		Node<T> foundListElement = findListElementByIndex(index);
-		final Node<T> next = foundListElement.next;
-		final Node<T> prev = foundListElement.prev;
+        Node<T> foundListElement = findListElementByIndex(index);
+        final Node<T> next = foundListElement.next;
+        final Node<T> prev = foundListElement.prev;
 
-		if (prev == null) {
-			firstNode = next;
-		} else {
-			prev.next = next;
-			foundListElement.prev = null;
-		}
+        if (prev == null) {
+            firstNode = next;
+        } else {
+            prev.next = next;
+            foundListElement.prev = null;
+        }
 
-		if (next == null) {
-			lastNode = prev;
-		} else {
-			next.prev = prev;
-			foundListElement.next = null;
-		}
+        if (next == null) {
+            lastNode = prev;
+        } else {
+            next.prev = prev;
+            foundListElement.next = null;
+        }
 
-		foundListElement.value = null;
-		size--;
-		return true;
-	}
+        foundListElement.value = null;
+        size--;
+        return true;
+    }
 
-	@Override
-	public T get(int index) {
-		if (index < 0 || index >= size) {
-			throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-		}
-		return findListElementByIndex(index).value;
-	}
+    @Override
+    public T get(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+        return findListElementByIndex(index).value;
+    }
 
-	@Override
-	public int size() {
-		return size;
-	}
+    @Override
+    public int size() {
+        return size;
+    }
 
     @Override
     public Object[] getArrayOfValues() {
@@ -96,15 +135,40 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
         return ar;
     }
 
-    private static class Node<T> {
-		T value;
-		Node<T> next;
-		Node<T> prev;
+    @Override
+    public void concat(MyLinkedList<T> newList) {
+        addAll((T[]) newList.getArrayOfValues());
+    }
 
-		public Node(T value, Node<T> next, Node<T> prev) {
-			this.value = value;
-			this.next = next;
-			this.prev = prev;
-		}
-	}
+    public void addAll(T[] arrray) {
+        int i = 0;
+        while (i < arrray.length) {
+            addItemToTail(arrray[i]);
+            i++;
+        }
+    }
+
+    private void addItemToTail(T item) {
+        Node<T> node = new Node<>(item, null, lastNode);
+        if (firstNode == null) {
+            firstNode = node;
+            lastNode = node;
+        }
+        lastNode.next = node;
+        lastNode = node;
+        size++;
+    }
+
+
+    private static class Node<T> {
+        T value;
+        Node<T> next;
+        Node<T> prev;
+
+        public Node(T value, Node<T> next, Node<T> prev) {
+            this.value = value;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
 }
