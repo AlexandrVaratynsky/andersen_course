@@ -1,5 +1,6 @@
 package com.andersen.pre_intensive;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,10 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import java.util.LinkedList;
-
-import org.junit.Assert;
-
 public class LinkedListImplementationTest {
 
     private final LinkedListImplementation<String> emptyList = new LinkedListImplementation<>();
@@ -22,58 +19,52 @@ public class LinkedListImplementationTest {
 
 
     private final String[] headAr = {"Hello", "World", "Test"};
-    private final String[] sortedHeadList = (String[]) Arrays.stream(headAr).sorted().toArray();
+    private String[] sortedHeadList;// = (String[]) Arrays.stream(headAr).sorted().toArray();
     private final String[] tailAr = {"Hello111", "World111", "Test111"};
 
-    LinkedListImplementation<String> list = new LinkedListImplementation<>();
+    LinkedListImplementation<String> list;
 
     @Before
     public void createTestList() {
-
-        list.add("1");
-        list.add("2");
-        list.add("3");
-        list.add("4");
+        list = new LinkedListImplementation<String>() {
+            {
+                add("1");
+                add("2");
+                add("3");
+                add("4");
+            }
+        };
     }
 
     @Test
     public void add() {
-    	
-    	LinkedListImplementation<Integer> linkList = new LinkedListImplementation<Integer>();
-		
-		Integer [] inArray = {0, 1, 2, 3};
-		for (Integer i : inArray) {
-			linkList.add(i);
-		}
-		
-		Integer [] arrayFromList = new Integer [inArray.length]; 
-		for (int i = 0; i < inArray.length; i++) {
-			arrayFromList [i] = linkList.get(i);
-		}
-		
-		for (int i = 0; i < inArray.length; i++) {
-			Assert.assertEquals(inArray[i], arrayFromList[i]);
-		}
-		
-    }
-    
-    @Test
-    public void addWithIndex () {
-    	
-    	LinkedListImplementation<Integer> linkList = new LinkedListImplementation<Integer>();
-    	Integer [] inArray = {0, 1, 2, 3};
-		for (Integer i : inArray) {
-			linkList.add(i);
-		}
-		
-		Integer ins = 5;
-		linkList.add(ins, 1);
-		Assert.assertEquals(ins, linkList.get(1));
-		
+        MyLinkedList<Integer> linkList = new LinkedListImplementation<>();
+
+        int[] inArray = {0, 1, 2, 3};
+        for (Integer i : inArray) {
+            linkList.add(i);
+        }
+
+        int[] arrayFromList = new int[inArray.length];
+        for (int i = 0; i < inArray.length; i++) {
+            arrayFromList[i] = linkList.get(i);
+        }
+
+        Assert.assertArrayEquals(inArray, arrayFromList);
     }
 
     @Test
-    public void testAdd() {
+    public void addWithIndex() {
+        MyLinkedList<Integer> linkList = new LinkedListImplementation<>();
+
+        int[] inArray = {0, 1, 2, 3};
+        for (Integer i : inArray) {
+            linkList.add(i);
+        }
+
+        int ins = 5;
+        linkList.add(ins, 1);
+        Assert.assertEquals(ins, (int) linkList.get(1));
     }
 
     @Test
@@ -83,7 +74,6 @@ public class LinkedListImplementationTest {
         List<String> actual = Arrays.asList((String[]) headList.getArrayOfValues());
         assertThat(actual)
                 .containsExactlyInAnyOrder(sortedHeadList);
-
     }
 
     @Test
@@ -170,13 +160,13 @@ public class LinkedListImplementationTest {
 
     @Test
     public void size() {
-    	
+
     	LinkedListImplementation<Integer> linkList = new LinkedListImplementation<Integer>();
-		
+
 		linkList.add(0);
 		linkList.add(1);
 		linkList.add(2);
-		
+
 		int size = linkList.size();
 		Assert.assertEquals(3, size);
     }
