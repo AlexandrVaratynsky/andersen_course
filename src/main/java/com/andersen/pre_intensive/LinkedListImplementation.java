@@ -1,6 +1,5 @@
 package com.andersen.pre_intensive;
 
-
 import java.util.Arrays;
 
 public class LinkedListImplementation<T> implements MyList<T> {
@@ -39,7 +38,7 @@ public class LinkedListImplementation<T> implements MyList<T> {
     @Override
     public void add(Object o, int index) {
         if (!isCorrectPosition(index)) {
-            throw new IndexOutOfBoundsException(index + " position is outbound");
+            throw new IndexOutOfBoundsException(outOfBoundsExceptionMsg(index));
         }
 
         if (index == size - 1) {
@@ -57,6 +56,10 @@ public class LinkedListImplementation<T> implements MyList<T> {
             replaceElement.prev = newElement;
             size++;
         }
+    }
+
+    private String outOfBoundsExceptionMsg(int index) {
+        return index + " position is outbound";
     }
 
     private boolean isCorrectPosition(int index) {
@@ -93,7 +96,7 @@ public class LinkedListImplementation<T> implements MyList<T> {
     @Override
     public boolean delete(int index) {
         if (!isCorrectPosition(index)) {
-            throw new IndexOutOfBoundsException(index + " position is outbound");
+            throw new IndexOutOfBoundsException(outOfBoundsExceptionMsg(index));
         }
 
         Node<T> foundListElement = findListElementByIndex(index);
@@ -122,7 +125,7 @@ public class LinkedListImplementation<T> implements MyList<T> {
     @Override
     public T get(int index) {
         if (!isCorrectPosition(index)) {
-            throw new IndexOutOfBoundsException(index + " position is outbound");
+            throw new IndexOutOfBoundsException(outOfBoundsExceptionMsg(index));
         }
         return findListElementByIndex(index).value;
     }
