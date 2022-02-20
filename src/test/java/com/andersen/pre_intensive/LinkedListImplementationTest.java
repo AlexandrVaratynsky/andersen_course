@@ -236,4 +236,17 @@ public class LinkedListImplementationTest {
         assertThat(actual)
                 .isEqualTo(expected);
     }
+
+    @Test
+    public void isEmptyListEmpty() {
+        assertThat(emptyList.isEmpty())
+                .isTrue();
+    }
+
+    @Test
+    public void isNotEmptyListEmpty() {
+        headList = new LinkedListImplementation<>(headAr);
+        assertThat(headList.isEmpty())
+                .isFalse();
+    }
 }

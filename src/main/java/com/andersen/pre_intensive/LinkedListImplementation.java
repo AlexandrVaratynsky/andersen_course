@@ -18,6 +18,11 @@ public class LinkedListImplementation<T> implements MyList<T> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
     public void add(Object o) {
         T value = (T) o;
         Node<T> node = new Node<>(value, null, null);

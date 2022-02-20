@@ -17,4 +17,6 @@ public interface MyList<T> {
     int size();
 
     Object[] getArrayOfValues();
+
+    boolean isEmpty();
 }
