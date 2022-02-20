@@ -1,6 +1,6 @@
 package com.andersen.pre_intensive;
 
-public interface MyLinkedList<T> {
+public interface MyList<T> {
 
     void add(Object o);
 
@@ -8,7 +8,7 @@ public interface MyLinkedList<T> {
 
     void sort();
 
-    void concat(MyLinkedList<T> newList);
+    void concat(MyList<T> newList);
 
     boolean delete(int index);
 

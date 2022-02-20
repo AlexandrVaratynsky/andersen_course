@@ -3,7 +3,7 @@ package com.andersen.pre_intensive;
 
 import java.util.Arrays;
 
-public class LinkedListImplementation<T> implements MyLinkedList<T> {
+public class LinkedListImplementation<T> implements MyList<T> {
 
     private Node<T> firstNode;
     private Node<T> lastNode;
@@ -42,8 +42,6 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
         }
 
         if (index < size - 1) {
-
-
             Node<T> replaceElement = firstNode;
             for (int i = 0; i < index; i++) {
                 replaceElement = replaceElement.next;
@@ -53,7 +51,6 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
             replaceElement.prev.next = newElement;
             replaceElement.prev = newElement;
             size++;
-
         }
     }
 
@@ -90,8 +87,8 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
     @Override
     public boolean delete(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
+        if (!isCorrectPosition(index)) {
+            throw new IndexOutOfBoundsException(index + " position is outbound");
         }
 
         Node<T> foundListElement = findListElementByIndex(index);
@@ -119,8 +116,8 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
     @Override
     public T get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        if (!isCorrectPosition(index)) {
+            throw new IndexOutOfBoundsException(index + " position is outbound");
         }
         return findListElementByIndex(index).value;
     }
@@ -146,7 +143,7 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
     }
 
     @Override
-    public void concat(MyLinkedList<T> newList) {
+    public void concat(MyList<T> newList) {
         addAll((T[]) newList.getArrayOfValues());
     }
 

@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertArrayEquals;
@@ -13,14 +13,16 @@ import static org.junit.Assert.assertEquals;
 
 public class LinkedListImplementationTest {
 
-    private final LinkedListImplementation<String> emptyList = new LinkedListImplementation<>();
-    private LinkedListImplementation<String> headList;
-    private LinkedListImplementation<String> tailList;
+    private MyList<Integer> emptyList = new LinkedListImplementation<>();
+    private MyList<Integer> headList;
+    private MyList<Integer> tailList;
+    private LinkedListImplementation<Integer> emptyLinkedList = new LinkedListImplementation<>();
+    private LinkedListImplementation<Integer> headLinkedList = new LinkedListImplementation<>();
+    private LinkedListImplementation<Integer> tailLinkedList = new LinkedListImplementation<>();
 
-
-    private final String[] headAr = {"Hello", "World", "Test"};
-    private String[] sortedHeadList;// = (String[]) Arrays.stream(headAr).sorted().toArray();
-    private final String[] tailAr = {"Hello111", "World111", "Test111"};
+    private final Integer[] headAr = {10, 30, 20};
+    private final Integer[] tailAr = {50, 70, 60};
+    private final Integer[] unsortedAr = {10, 30, 20};
 
     LinkedListImplementation<String> list;
 
@@ -38,7 +40,7 @@ public class LinkedListImplementationTest {
 
     @Test
     public void add() {
-        MyLinkedList<Integer> linkList = new LinkedListImplementation<>();
+        MyList<Integer> linkList = new LinkedListImplementation<>();
 
         int[] inArray = {0, 1, 2, 3};
         for (Integer i : inArray) {
@@ -55,7 +57,7 @@ public class LinkedListImplementationTest {
 
     @Test
     public void addWithIndex() {
-        MyLinkedList<Integer> linkList = new LinkedListImplementation<>();
+        MyList<Integer> linkList = new LinkedListImplementation<>();
 
         int[] inArray = {0, 1, 2, 3};
         for (Integer i : inArray) {
@@ -69,39 +71,49 @@ public class LinkedListImplementationTest {
 
     @Test
     public void sort() {
-        headList = new LinkedListImplementation<>(headAr);
+        headList = new LinkedListImplementation<>(unsortedAr);
         headList.sort();
-        List<String> actual = Arrays.asList((String[]) headList.getArrayOfValues());
+        Integer[] actual = Arrays.stream(headList.getArrayOfValues())
+                .map(o -> (Integer) o)
+                .toArray(Integer[]::new);
         assertThat(actual)
-                .containsExactlyInAnyOrder(sortedHeadList);
+                .isSorted();
     }
 
     @Test
-    public void concat() {
-
+    public void concatNotEmptyListWithEmptyList() {
         headList = new LinkedListImplementation<>(headAr);
         headList.concat(emptyList);
-        assertThat(headList.getArrayOfValues())
-                .hasSize(headAr.length)
-                .containsAll(Arrays.asList(headAr))
-                .doesNotContain("ERROR")
-                .doesNotContain(666);
+        Integer[] actual = Arrays.stream(headList.getArrayOfValues())
+                .map(o -> (Integer) o)
+                .toArray(Integer[]::new);
+        assertThat(actual)
+                .containsExactlyInAnyOrder(headAr);
+    }
 
+    @Test
+    public void concatEmptyListWithNotEmptyList() {
         tailList = new LinkedListImplementation<>(tailAr);
         emptyList.concat(tailList);
-        assertThat(emptyList.getArrayOfValues())
-                .hasSize(tailAr.length)
-                .containsAll(Arrays.asList(tailAr))
-                .doesNotContain("ERROR")
-                .doesNotContain(666);
+        Integer[] actual = Arrays.stream(emptyList.getArrayOfValues())
+                .map(o -> (Integer) o)
+                .toArray(Integer[]::new);
+        assertThat(actual)
+                .isEqualTo(tailAr);
+    }
 
+    @Test
+    public void concatNotEmptyLists() {
+        headList = new LinkedListImplementation<>(headAr);
+        tailList = new LinkedListImplementation<>(tailAr);
         headList.concat(tailList);
-        assertThat(headList.getArrayOfValues())
-                .hasSize(headAr.length + tailAr.length)
-                .containsAll(Arrays.asList(headAr))
-                .containsAll(Arrays.asList(tailAr))
-                .doesNotContain("ERROR")
-                .doesNotContain(666);
+        Integer[] expectedAr = Stream.concat(Arrays.stream(headAr), Arrays.stream(tailAr))
+                .toArray(Integer[]::new);
+        Integer[] actual = Arrays.stream(headList.getArrayOfValues())
+                .map(o -> (Integer) o)
+                .toArray(Integer[]::new);
+        assertThat(actual)
+                .isEqualTo(expectedAr);
     }
 
     @Test
@@ -150,60 +162,78 @@ public class LinkedListImplementationTest {
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void getElementByWrongIndex() {
-        list.get(-1);
+        int index = -1;
+        list.get(index);
     }
 
     @Test
     public void getElementByIndex() {
-        assertEquals("1", list.get(0));
+        String expected = "1";
+        assertEquals(expected, list.get(0));
     }
 
     @Test
     public void size() {
-
-    	LinkedListImplementation<Integer> linkList = new LinkedListImplementation<Integer>();
-
-		linkList.add(0);
-		linkList.add(1);
-		linkList.add(2);
-
-		int size = linkList.size();
-		Assert.assertEquals(3, size);
+        MyList<Integer> linkList = new LinkedListImplementation<>();
+        linkList.add(0);
+        linkList.add(1);
+        linkList.add(2);
+        int expected = 3;
+        Assert.assertEquals(expected, linkList.size());
     }
 
     @Test
-    public void addAll() {
-
-        emptyList.addAll(tailAr);
-        assertThat(emptyList.getArrayOfValues())
-                .hasSize(tailAr.length)
-                .containsAll(Arrays.asList(tailAr))
-                .doesNotContain("ERROR")
-                .doesNotContain(666);
-
-        headList = new LinkedListImplementation<>(headAr);
-        headList.addAll(tailAr);
-
-        assertThat(headList.getArrayOfValues())
-                .hasSize(headAr.length + tailAr.length)
-                .containsAll(Arrays.asList(headAr))
-                .containsAll(Arrays.asList(tailAr))
-                .doesNotContain("ERROR")
-                .doesNotContain(666);
+    public void addAllToEmptyList() {
+        emptyLinkedList.addAll(tailAr);
+        Integer[] actual = Arrays.stream(emptyLinkedList.getArrayOfValues())
+                .map(o -> (Integer) o)
+                .toArray(Integer[]::new);
+        assertThat(actual)
+                .isEqualTo(tailAr);
     }
 
     @Test
-    public void getArrayOfValues() {
-        assertThat(emptyList.getArrayOfValues())
-                .hasSize(0)
-                .doesNotContain("ERROR")
-                .doesNotContain(666);
+    public void addAllToNotEmptyList() {
+        headLinkedList = new LinkedListImplementation<>();
+        headLinkedList.addAll(tailAr);
+        headLinkedList.addAll(tailAr);
+        Integer[] expected = Stream.concat(Arrays.stream(tailAr), Arrays.stream(tailAr))
+                .toArray(Integer[]::new);
+        Integer[] actual = Arrays.stream(headLinkedList.getArrayOfValues())
+                .map(o -> (Integer) o)
+                .toArray(Integer[]::new);
+        assertThat(actual)
+                .isEqualTo(expected);
+    }
 
+    @Test
+    public void constructorWithInput() {
+        headLinkedList = new LinkedListImplementation<>(headAr);
+        Integer[] actual = Arrays.stream(headLinkedList.getArrayOfValues())
+                .map(o -> (Integer)o)
+                .toArray(Integer[]::new);
+        assertThat(actual)
+                .isEqualTo(headAr);
+    }
+
+    @Test
+    public void getArrayOfValuesFromEmptyList() {
+        Integer[] expected = new Integer[0];
+        Integer[] actual = Arrays.stream(emptyList.getArrayOfValues())
+                .map(o -> (Integer) o)
+                .toArray(Integer[]::new);
+        assertThat(actual)
+                .isEqualTo(expected);
+    }
+
+    @Test
+    public void getArrayOfValuesFromNotEmptyList() {
         headList = new LinkedListImplementation<>(headAr);
-        assertThat(headList.getArrayOfValues())
-                .hasSize(headAr.length)
-                .containsAll(Arrays.asList(headAr))
-                .doesNotContain("ERROR")
-                .doesNotContain(666);
+        Integer[] expected = headAr;
+        Integer[] actual = Arrays.stream(headList.getArrayOfValues())
+                .map(o -> (Integer)o)
+                .toArray(Integer[]::new);
+        assertThat(actual)
+                .isEqualTo(expected);
     }
 }
