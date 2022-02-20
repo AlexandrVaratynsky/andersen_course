@@ -3,7 +3,7 @@ package com.andersen.pre_intensive;
 
 import java.util.Arrays;
 
-public class LinkedListImplementation<T> implements MyLinkedList<T> {
+public class LinkedListImplementation<T> implements MyList<T> {
 
     private Node<T> firstNode;
     private Node<T> lastNode;
@@ -18,27 +18,49 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
     public void add(Object o) {
-
-        Node<T> nod;
+        T value = (T) o;
+        Node<T> node = new Node<>(value, null, null);
         if (size == 0) {
-            nod = new Node((T) o, null, null);
-            firstNode = nod;
-            lastNode = nod;
-            System.out.println(firstNode + " " + lastNode);
-            size++;
+            firstNode = node;
         } else {
-            nod = new Node((T) o, null, lastNode);
-            lastNode.next = nod;
-            lastNode = nod;
-            size++;
+            node.setPrev(lastNode);
+            lastNode.next = node;
         }
-
+        lastNode = node;
+        size++;
     }
 
     @Override
     public void add(Object o, int index) {
+        if (!isCorrectPosition(index)) {
+            throw new IndexOutOfBoundsException(index + " position is outbound");
+        }
 
+        if (index == size - 1) {
+            this.add(o);
+        }
+
+        if (index < size - 1) {
+            Node<T> replaceElement = firstNode;
+            for (int i = 0; i < index; i++) {
+                replaceElement = replaceElement.next;
+            }
+
+            Node<T> newElement = new Node<>((T) o, replaceElement, replaceElement.prev);
+            replaceElement.prev.next = newElement;
+            replaceElement.prev = newElement;
+            size++;
+        }
+    }
+
+    private boolean isCorrectPosition(int index) {
+        return index >= 0 && index < size;
     }
 
     @Override
@@ -55,7 +77,6 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
     }
 
     Node<T> findListElementByIndex(int index) {
-
         if (index < (size / 2)) {
             Node<T> node = firstNode;
             for (int i = 0; i < index; i++)
@@ -71,8 +92,8 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
     @Override
     public boolean delete(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
+        if (!isCorrectPosition(index)) {
+            throw new IndexOutOfBoundsException(index + " position is outbound");
         }
 
         Node<T> foundListElement = findListElementByIndex(index);
@@ -100,8 +121,8 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
     @Override
     public T get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        if (!isCorrectPosition(index)) {
+            throw new IndexOutOfBoundsException(index + " position is outbound");
         }
         return findListElementByIndex(index).value;
     }
@@ -127,7 +148,7 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
     }
 
     @Override
-    public void concat(MyLinkedList<T> newList) {
+    public void concat(MyList<T> newList) {
         addAll((T[]) newList.getArrayOfValues());
     }
 
@@ -152,9 +173,33 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
 
 
     private static class Node<T> {
-        T value;
-        Node<T> next;
-        Node<T> prev;
+        private T value;
+        private Node<T> next;
+        private Node<T> prev;
+
+        public T getValue() {
+            return value;
+        }
+
+        public Node<T> getNext() {
+            return next;
+        }
+
+        public Node<T> getPrev() {
+            return prev;
+        }
+
+        public void setValue(T value) {
+            this.value = value;
+        }
+
+        public void setNext(Node<T> next) {
+            this.next = next;
+        }
+
+        public void setPrev(Node<T> prev) {
+            this.prev = prev;
+        }
 
         public Node(T value, Node<T> next, Node<T> prev) {
             this.value = value;
@@ -163,3 +208,4 @@ public class LinkedListImplementation<T> implements MyLinkedList<T> {
         }
     }
 }
+
