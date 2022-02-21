@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,23 +26,56 @@ public class ArrayListImplementationTest {
     private int toRemoveZeroIndex;
     private int toRemoveIndexGreaterSize;
 
+    @Before
+    public void setUp() throws Exception {
+        toRemoveIndexNegative = -5;
+        toRemoveZeroIndex = 0;
+        toRemoveIndexGreaterSize = 5;
+
+        shouldBeNotEmptyList = new ArrayList<>();
+        IntStream.range(0, sampleAr.length)
+                .forEach(i -> shouldBeNotEmptyList.add(sampleAr[i]));
+
+        emptyDefaultInitedArList = new ArrayListImplementation<>();
+
+        initialCapacity = 20;
+        emptyCapacityInitedArList = new ArrayListImplementation<>(initialCapacity);
+
+        notEmptyList = new ArrayListImplementation<>();
+        IntStream.range(0, shouldBeNotEmptyList.size())
+                .forEach(i -> notEmptyList.add(shouldBeNotEmptyList.get(i)));
+    }
+
     @Test
-    public void isEmpty() {
+    public void isEmptyDefaultInitedListEmpty() {
         assertThat(emptyDefaultInitedArList.isEmpty())
                 .isTrue();
+    }
+
+    @Test
+    public void isEmptyCapacityInitedListEmpty() {
         assertThat(emptyCapacityInitedArList.isEmpty())
                 .isTrue();
+    }
+
+    @Test
+    public void isNotEmptyListEmpty() {
         assertThat(notEmptyList.isEmpty())
                 .isFalse();
     }
 
     @Test
-    public void add() {
+    public void addToEmptyList() {
         int addedNum = 50;
         emptyDefaultInitedArList.add(addedNum);
         assertThat(emptyDefaultInitedArList.get(emptyDefaultInitedArList.size() - 1))
                 .isEqualTo(addedNum);
+    }
 
+
+    @Test
+    public void addToNotEmptyList() {
+        int addedNum = 50;
         notEmptyList.add(addedNum);
         assertThat(notEmptyList.get(notEmptyList.size() - 1))
                 .isEqualTo(addedNum);
@@ -50,38 +84,35 @@ public class ArrayListImplementationTest {
     @Test
     public void sort() {
         notEmptyList.sort();
-        Integer[] sortResult = Arrays.stream(notEmptyList.getArrayOfValues())
+        Integer[] actual = Arrays.stream(notEmptyList.getArrayOfValues())
                 .map(o -> (Integer) o)
                 .toArray(Integer[]::new);
-
-        assertThat(sortResult)
+        assertThat(actual)
                 .isSorted();
     }
 
     @Test
-    public void concat() {
+    public void concatNotEmptyToEmptyList(){
         MyList<Integer> concated = new ArrayListImplementation<>();
         concated.concat(notEmptyList);
-        Integer[] concatedAr = Arrays.stream(concated.getArrayOfValues())
+        Integer[] actual = Arrays.stream(concated.getArrayOfValues())
                 .map(o -> (Integer) o)
                 .toArray(Integer[]::new);
+        Integer[] expected = shouldBeNotEmptyList.toArray(new Integer[0]);
+        assertThat(actual)
+                .isEqualTo(expected);
+    }
 
-        Integer[] shouldBeAr = shouldBeNotEmptyList.toArray(new Integer[0]);
-
-        assertThat(concatedAr)
-                .containsExactlyInAnyOrder(shouldBeAr);
-
-
-        concated.concat(notEmptyList);
-        concatedAr = Arrays.stream(concated.getArrayOfValues())
+    @Test
+    public void concatNotEmptyToNotEmptyList(){
+        notEmptyList.concat(notEmptyList);
+        Integer[] actual = Arrays.stream(notEmptyList.getArrayOfValues())
                 .map(o -> (Integer) o)
                 .toArray(Integer[]::new);
-
-        shouldBeNotEmptyList.addAll(shouldBeNotEmptyList);
-        shouldBeAr = shouldBeNotEmptyList.toArray(new Integer[0]);
-
-        assertThat(concatedAr)
-                .containsExactlyInAnyOrder(shouldBeAr);
+        Integer[] expected = Stream.concat(Arrays.stream(sampleAr), Arrays.stream(sampleAr))
+                .toArray(Integer[]::new);
+        assertThat(actual)
+                .isEqualTo(expected);
     }
 
     @Test
@@ -123,32 +154,15 @@ public class ArrayListImplementationTest {
     }
 
     @Test
-    public void getArrayOfValues() {
+    public void getArrayOfValuesFromEmptyList(){
         assertThat(emptyDefaultInitedArList.getArrayOfValues())
                 .isEmpty();
+    }
 
+    @Test
+    public void getArrayOfValues() {
         assertThat(notEmptyList.getArrayOfValues())
                 .isNotEmpty()
                 .containsExactlyInAnyOrder(shouldBeNotEmptyList.toArray());
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        toRemoveIndexNegative = -5;
-        toRemoveZeroIndex = 0;
-        toRemoveIndexGreaterSize = 5;
-
-        shouldBeNotEmptyList = new ArrayList<>();
-        IntStream.range(0, sampleAr.length)
-                .forEach(i -> shouldBeNotEmptyList.add(sampleAr[i]));
-
-        emptyDefaultInitedArList = new ArrayListImplementation<>();
-
-        initialCapacity = 20;
-        emptyCapacityInitedArList = new ArrayListImplementation<>(initialCapacity);
-
-        notEmptyList = new ArrayListImplementation<>();
-        IntStream.range(0, shouldBeNotEmptyList.size())
-                .forEach(i -> notEmptyList.add(shouldBeNotEmptyList.get(i)));
     }
 }
