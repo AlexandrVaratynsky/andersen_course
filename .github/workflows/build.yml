@@ -30,7 +30,13 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
+        # The properties can be specified directly through the command line. Ex:
+        # sonar-scanner -Dsonar.projectKey=myproject -Dsonar.sources=src1 -Dsonar.tests=.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=AlexandrVaratynsky_andersen_course
+        run: mvn -B verify>
+        org.sonarsource.scanner.maven:sonar-maven-plugin:sonar>
+        -Dsonar.projectKey=AlexandrVaratynsky_andersen_course>
+        -Dsonar.sources=.>
+        -Dsonar.tests=.
